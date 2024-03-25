@@ -1,0 +1,19 @@
+version: "2.4"
+
+services:
+
+  shell:
+    volumes:
+    - "../:/app"
+    stdin_open: true
+    tty: true
+    extends:
+      file: docker-compose.base.yaml
+      service: base
+    entrypoint: ["bash"]
+  
+  bandit:
+    extends:
+      file: docker-compose.base.yaml
+      service: base
+    entrypoint: ["bandit"]

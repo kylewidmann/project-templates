@@ -1,0 +1,17 @@
+{
+    "author": "Florian Maas",
+    "full_name": "{{cookiecutter.author}}",
+    "email": "fpgmaas@gmail.com",
+    "author_github_handle": "fpgmaas",
+    "project_name": "example-project",
+    "project_slug": "{{cookiecutter.project_name|lower|replace('-', '_')}}",
+    "project_description": "This is a template repository for Python projects that use Poetry for their dependency management.",
+    "open_source_license": [
+        "MIT license",
+        "BSD license",
+        "ISC license",
+        "Apache Software License 2.0",
+        "GNU General Public License v3",
+        "Not open source"
+    ]
+}
