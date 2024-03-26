@@ -17,6 +17,11 @@ infrastructure: ##@development Set up infrastructure for tests
 infrastructure:
 	echo "Skipping..."
 
+.PHONY: client
+clean: ##@development Clean up any dependencies
+clean:
+	echo "Skipping..."
+
 .PHONY: config
 ci: ##@development Run CI pipeline
 ci: clean build infrastructure lint test clean

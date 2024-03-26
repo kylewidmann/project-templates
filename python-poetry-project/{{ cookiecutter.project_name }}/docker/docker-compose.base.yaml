@@ -8,4 +8,4 @@ services:
 
 networks:
   base:
-    name: ${PROJECT}-${BRANCH_NAME:local}-${BUILD_NUMBER:0}
+    name: $${PROJECT}-$${BRANCH_NAME:local}-$${BUILD_NUMBER:0}

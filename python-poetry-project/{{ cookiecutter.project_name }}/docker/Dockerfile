@@ -4,7 +4,7 @@ ENV \
   PYTHONUNBUFFERED=1 \
   PYTHONDONTWRITEBYTECODE=1 \
   POETRY_VERSION=1.5.1 \
-  POETRY_VIRUALENVS_IN_PROJECT=true \
+  POETRY_VIRTUALENVS_IN_PROJECT=true \
   POETRY_NO_INTERACTION=1 \
   POETRY_HOME="/opt/poetry" \
   POETRY="/opt/poetry/bin/poetry"
@@ -45,6 +45,8 @@ RUN apt-get update \
 ENV PATH="/app/.venv/bin:$PATH"
 ENV APP_USER app
 ENV APP_GROUP app
+RUN groupadd  ${APP_GROUP}
+RUN useradd -g ${APP_GROUP} ${APP_USER}
 
 WORKDIR /app
 COPY --chown=${APP_USER}:${APP_GROUP} ${PROEJCT_DIR}/ ./
@@ -62,14 +64,15 @@ FROM base as development
 ENV PATH="/app/.venv/bin:$PATH"
 ENV APP_USER app
 ENV APP_GROUP app
+RUN groupadd  ${APP_GROUP}
+RUN useradd -g ${APP_GROUP} ${APP_USER}
 
 USER root
 RUN set -ex \
     && apt-get update
 
 WORKDIR /app
-COPY --chown=${APP_USER}:${APP_GROUP} ${PROEJCT_DIR}/ ./
-COPY --from=base /app .
+COPY --chown=${APP_USER}:${APP_GROUP} . ./
 RUN poetry install
 USER ${APP_USER}
 
