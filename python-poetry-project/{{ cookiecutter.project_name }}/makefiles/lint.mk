@@ -1,9 +1,8 @@
 .PHONY: bandit
 bandit: ##@lint Run bandit
 bandit: files ?= ${SERVICE}
-bandit: args ?= --configfile=bandit.yaml
 bandit:
-	${DC} run --rm --no-deps bandit -r ${files} ${args}
+	${DC} run --rm --no-deps bandit -r ${files}
 
 .PHONY: black
 black: ##@lint Run black
