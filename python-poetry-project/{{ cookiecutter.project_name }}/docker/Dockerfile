@@ -33,7 +33,7 @@ RUN poetry install --only main
 
 FROM python:3.12.2-slim-bookworm as production
 
-ARG PROEJCT_DIR
+ARG PROJECT_DIR
 
 USER root
 
@@ -49,7 +49,7 @@ RUN groupadd  ${APP_GROUP}
 RUN useradd -g ${APP_GROUP} ${APP_USER}
 
 WORKDIR /app
-COPY --chown=${APP_USER}:${APP_GROUP} ${PROEJCT_DIR}/ ./
+COPY --chown=${APP_USER}:${APP_GROUP} ${PROJECT_DIR}/ ./
 COPY --from=base /app .
 USER ${APP_USER}
 
