@@ -1,4 +1,4 @@
-FROM python:3.12.2-slim-bookworm as base
+FROM python:3.12.2-slim-bookworm AS base
 
 ENV \
   PYTHONUNBUFFERED=1 \
@@ -31,7 +31,7 @@ RUN poetry install --only main
 ## PRODUCTION ##
 ##################################################
 
-FROM python:3.12.2-slim-bookworm as production
+FROM python:3.12.2-slim-bookworm AS production
 
 ARG PROJECT_DIR
 
@@ -59,7 +59,7 @@ ENTRYPOINT ["/app/scripts/entrypoint.sh"]
 ## DEVELOPMENT ##
 ##################################################
 
-FROM base as development
+FROM base AS development
 
 ENV PATH="/app/.venv/bin:$PATH"
 ENV APP_USER app
@@ -71,9 +71,10 @@ USER root
 RUN set -ex \
     && apt-get update
 
-WORKDIR /app
-COPY --chown=${APP_USER}:${APP_GROUP} . ./
+WORKDIR /app/${PROJECT_DIR}
+COPY --chown=${APP_USER}:${APP_GROUP} ./${PROJECT_DIR} ./
 RUN poetry install
+RUN chown ${APP_USER}:${APP_GROUP} .
 USER ${APP_USER}
 
 ENTRYPOINT ["/app/scripts/entrypoint.sh"]
