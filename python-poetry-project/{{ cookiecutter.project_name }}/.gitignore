@@ -1,3 +1,10 @@
 .coverage
 .venv
 **/__pycache__/*
+htmlcov/
+.ruff_cache/
+.mypy_cache/
+.localenv
+.continue/
+*.egg-info/
+dist/

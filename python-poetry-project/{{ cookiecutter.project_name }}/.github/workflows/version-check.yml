@@ -1,0 +1,60 @@
+name: Version Check
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '{{cookiecutter.project_slug}}/**'
+
+jobs:
+  version-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch main
+        run: git fetch origin main
+
+      - name: Check version bump
+        run: |
+          set -e
+
+          get_version() {
+            if [ -f "VERSION" ]; then
+              head -1 VERSION | tr -d '\n\r \t'
+            elif [ -f "pyproject.toml" ]; then
+              sed -n '/^\[tool\.poetry\]/,/^\[/p' pyproject.toml \
+                | grep '^version = ' | head -1 \
+                | sed -E 's/^version = ["'"'"']([^"'"'"']+)["'"'"'].*/\1/'
+            else
+              echo ""
+            fi
+          }
+
+          MAIN_VERSION=$(git show origin/main:VERSION 2>/dev/null | head -1 | tr -d '\n\r \t' || true)
+          if [ -z "$MAIN_VERSION" ]; then
+            MAIN_VERSION=$(git show origin/main:pyproject.toml 2>/dev/null \
+              | sed -n '/^\[tool\.poetry\]/,/^\[/p' \
+              | grep '^version = ' | head -1 \
+              | sed -E 's/^version = ["'"'"']([^"'"'"']+)["'"'"'].*/\1/' || true)
+          fi
+          [ -z "$MAIN_VERSION" ] && MAIN_VERSION="0.0.0"
+
+          PR_VERSION=$(get_version)
+
+          if [ -z "$PR_VERSION" ]; then
+            echo "::error::No VERSION file or version in pyproject.toml found."
+            exit 1
+          fi
+
+          HIGHER=$(printf '%s\n%s\n' "$MAIN_VERSION" "$PR_VERSION" | sort -V | tail -n1)
+          if [ "$HIGHER" = "$PR_VERSION" ] && [ "$MAIN_VERSION" != "$PR_VERSION" ]; then
+            echo "✅ Version bumped: $MAIN_VERSION → $PR_VERSION"
+          else
+            echo "::error::Version must be higher than on main. main=$MAIN_VERSION, PR=$PR_VERSION"
+            exit 1
+          fi

@@ -1,0 +1,18 @@
+{
+    "author": "Kyle Widmann",
+    "email": "kylewidmann@gmail.com",
+    "author_github_handle": "kylewidmann",
+    "project_name": "example-monorepo",
+    "project_slug": "{{cookiecutter.project_name|lower|replace('-', '_')}}",
+    "package_name": "example-package",
+    "package_slug": "{{cookiecutter.package_name|lower|replace('-', '_')}}",
+    "project_description": "A Python monorepo.",
+    "open_source_license": [
+        "MIT license",
+        "BSD license",
+        "ISC license",
+        "Apache Software License 2.0",
+        "GNU General Public License v3",
+        "Not open source"
+    ]
+}

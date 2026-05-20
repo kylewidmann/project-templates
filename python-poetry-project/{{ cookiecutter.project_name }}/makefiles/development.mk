@@ -4,7 +4,7 @@ venv:
 	${POETRY} install
 
 .PHONY: build
-buid: ##@development Build the docker images
+build: ##@development Build the docker images
 build: prod_image ?= ${PROJECT}:${BRANCH_NAME}-${BUILD_NUMBER}
 build: dev_image ?= ${PROJECT}_development:${BRANCH_NAME}-${BUILD_NUMBER}
 build: args ?= -f docker/Dockerfile --build-arg PROJECT_DIR=. --network=host --build-arg BUILDKIT_INLINE_CACHE=1
@@ -15,13 +15,13 @@ build:
 .PHONY: infrastructure
 infrastructure: ##@development Set up infrastructure for tests
 infrastructure:
-	echo "Skipping..."
+	@echo "Skipping..."
 
-.PHONY: client
+.PHONY: clean
 clean: ##@development Clean up any dependencies
 clean:
-	echo "Skipping..."
+	@echo "Skipping..."
 
-.PHONY: config
+.PHONY: ci
 ci: ##@development Run CI pipeline
 ci: clean build infrastructure lint test clean

@@ -1,9 +1,9 @@
-FROM python:3.12.2-slim-bookworm AS base
+FROM python:3.12-slim-bookworm AS base
 
 ENV \
   PYTHONUNBUFFERED=1 \
   PYTHONDONTWRITEBYTECODE=1 \
-  POETRY_VERSION=1.5.1 \
+  POETRY_VERSION=2.1.3 \
   POETRY_VIRTUALENVS_IN_PROJECT=true \
   POETRY_NO_INTERACTION=1 \
   POETRY_HOME="/opt/poetry" \
@@ -31,7 +31,7 @@ RUN poetry install --only main
 ## PRODUCTION ##
 ##################################################
 
-FROM python:3.12.2-slim-bookworm AS production
+FROM python:3.12-slim-bookworm AS production
 
 ARG PROJECT_DIR
 

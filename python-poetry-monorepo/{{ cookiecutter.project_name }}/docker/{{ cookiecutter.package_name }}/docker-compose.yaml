@@ -1,0 +1,23 @@
+services:
+
+  base: &base
+    image: ${PROJECT}_dev:${BRANCH_NAME:-local}-${BUILD_NUMBER:-0}
+    working_dir: /app
+    volumes:
+      - "../../:/app"
+
+  shell:
+    <<: *base
+    stdin_open: true
+    tty: true
+    entrypoint: ["bash"]
+
+  lint:
+    <<: *base
+    entrypoint: ["ruff"]
+
+  test:
+    <<: *base
+    entrypoint: ["python", "-m", "pytest", "-s", "--tb=native", "--durations=5",
+                 "--cov={{cookiecutter.package_slug}}", "--cov-report=html", "tests",
+                 "&&", "coverage", "report", "--fail-under=90"]
